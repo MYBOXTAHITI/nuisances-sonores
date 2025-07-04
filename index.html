@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquête Nuisances Sonores - Presqu'île de Tahiti</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2.2em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .question-block {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+        
+        .question-block:hover {
+            transform: translateX(5px);
+        }
+        
+        .question-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-item:hover, .radio-item:hover {
+            background: #e3f2fd;
+            transform: translateX(3px);
+        }
+        
+        input[type="checkbox"], input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .results {
+            display: none;
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px solid #4caf50;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .chart-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 25px;
+            margin: 8px 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            padding: 0 15px;
+            transition: width 0.5s ease;
+            font-size: 14px;
+        }
+        
+        .analysis-text {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .analysis-text p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .chart-data {
+            background: #f1f3f4;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .chart-data-item {
+            margin: 5px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 3px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #1877f2;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .facebook-post .post-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Enquête Nuisances Sonores</h1>
+            <p style="color: #666; font-size: 1.1em;">Commune de Taiarapu-Est - Action Citoyenne</p>
+            <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; margin-top: 15px;">
+                <strong>Temps estimé : 3-4 minutes</strong>
+                <div class="footer">
+            <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                <button id="adminBtn" onclick="showAdminPanel()" style="background: #ff6b35; color: white; padding: 10px 20px; border: none; border-radius: 25px; cursor: pointer; font-size: 0.9em;">
+                    🔐 Administration
+                </button>
+            </div>
+            
+            <div id="adminPanel" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 10px; border: 2px solid #ff6b35;">
+                <h4 style="color: #ff6b35; text-align: center;">Panel Administrateur</h4>
+                <div style="text-align: center;">
+                    <input type="password" id="adminPassword" placeholder="Mot de passe" style="padding: 10px; margin: 10px; border: 2px solid #e0e0e0; border-radius: 5px;">
+                    <br>
+                    <button onclick="generateTable()" style="background: #4caf50; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; margin: 10px;">
+                        📊 Générer Tableau des Insatisfaits
+                    </button>
+                </div>
+            </div>
+            
+            <div id="resultTable" style="display: none; margin-top: 30px;"></div>
+        </div>
+    </div>
+        </div>
+        
+        <div class="facebook-post">
+            <div class="post-header">APPEL À TÉMOIGNAGES - COMMUNE DE TAIARAPU-EST</div>
+            <p>Habitants de Taiarapu-Est ! Les nuisances sonores (motos, musique forte, rassemblements nocturnes) perturbent notre tranquillité et notre santé.</p>
+            <p>Ensemble, documentons ces problèmes pour une action collective constructive !</p>
+        </div>
+        
+        <form id="noiseForm">
+            <div class="question-block">
+                <div class="question-title">1. Quels types de nuisances sonores constatez-vous ? (Plusieurs réponses possibles)</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="motos" name="nuisances" value="motos">
+                        <label for="motos">Motos bruyantes ou rodéos urbains</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="musique" name="nuisances" value="musique">
+                        <label for="musique">Musique trop forte (hauts-parleurs, soirées)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="rassemblements" name="nuisances" value="rassemblements">
+                        <label for="rassemblements">Rassemblements nocturnes bruyants</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="autres" name="nuisances" value="autres">
+                        <label for="autres">Autres bruits gênants</label>
+                    </div>
+                </div>
+                <input type="text" id="autresDetails" placeholder="Précisez les autres nuisances..." style="margin-top: 10px;">
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">2. À quelle fréquence subissez-vous ces nuisances ?</div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="quotidien" name="frequence" value="quotidien">
+                        <label for="quotidien">Tous les jours</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="plusieurs" name="frequence" value="plusieurs">
+                        <label for="plusieurs">Plusieurs fois par semaine</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="hebdo" name="frequence" value="hebdo">
+                        <label for="hebdo">Une fois par semaine</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="mensuel" name="frequence" value="mensuel">
+                        <label for="mensuel">Quelques fois par mois</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="rare" name="frequence" value="rare">
+                        <label for="rare">Très rarement</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">3. À quels moments ces bruits sont-ils les plus dérangeants ?</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="jour" name="moments" value="jour">
+                        <label for="jour">Journée (7h-18h)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="soiree" name="moments" value="soiree">
+                        <label for="soiree">Soirée (18h-22h)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="nuit" name="moments" value="nuit">
+                        <label for="nuit">Nuit (22h-5h)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="matin" name="moments" value="matin">
+                        <label for="matin">Petit matin (5h-7h)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">4. Où se produisent ces nuisances ?</div>
+                <label for="commune" style="display: block; margin-bottom: 10px; font-weight: bold;">Commune associée :</label>
+                <select id="commune" name="commune" required style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 5px; font-size: 16px; margin-bottom: 15px;">
+                    <option value="">Sélectionnez votre commune</option>
+                    <option value="afaahiti-taravao">Afaahiti-Taravao</option>
+                    <option value="faaone">Faaone</option>
+                    <option value="pueu">Pueu</option>
+                    <option value="tautira">Tautira</option>
+                </select>
+                <label for="lieu" style="display: block; margin-bottom: 10px; font-weight: bold;">Lieu précis :</label>
+                <input type="text" id="lieu" name="lieu" placeholder="Ex: Quartier, rue, près de la plage..." required>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">5. Quels impacts sur votre santé et qualité de vie ?</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="sommeil" name="impacts" value="sommeil">
+                        <label for="sommeil">Troubles du sommeil / insomnies</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="stress" name="impacts" value="stress">
+                        <label for="stress">Stress, irritabilité, fatigue</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="enfants" name="impacts" value="enfants">
+                        <label for="enfants">Effets sur les enfants</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aines" name="impacts" value="aines">
+                        <label for="aines">Effets sur les personnes âgées</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="insecurite" name="impacts" value="insecurite">
+                        <label for="insecurite">Sentiment d'insécurité</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">6. Avez-vous déjà fait des démarches ?</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="police" name="demarches" value="police">
+                        <label for="police">Signalement aux forces de l'ordre</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="mairie" name="demarches" value="mairie">
+                        <label for="mairie">Contact avec la mairie</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="dialogue" name="demarches" value="dialogue">
+                        <label for="dialogue">Dialogue avec les auteurs</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aucune" name="demarches" value="aucune">
+                        <label for="aucune">Aucune démarche</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">7. Si oui, quelles suites ou réponses avez-vous obtenues suite à vos démarches ?</div>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="aucune_suite" name="suites" value="aucune_suite">
+                        <label for="aucune_suite">Aucune intervention ni amélioration constatée (les nuisances continuent)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="ponctuelle" name="suites" value="ponctuelle">
+                        <label for="ponctuelle">Une intervention ponctuelle a eu lieu (ex : patrouille de police) mais sans effet durable</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="sans_reponse" name="suites" value="sans_reponse">
+                        <label for="sans_reponse">Votre signalement est resté sans réponse de la part des autorités</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="pas_competence" name="suites" value="pas_competence">
+                        <label for="pas_competence">On vous a répondu que ce problème ne relevait pas de leur compétence</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="amelioration" name="suites" value="amelioration">
+                        <label for="amelioration">Des actions ont été entreprises et la situation s'est améliorée durablement</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="autre_suite" name="suites" value="autre_suite">
+                        <label for="autre_suite">Autre réponse des autorités / autre résultat (précisez)</label>
+                    </div>
+                </div>
+                <input type="text" id="autresSuitesDetails" placeholder="Précisez l'autre réponse ou résultat..." style="margin-top: 10px;">
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">8. Depuis combien de temps subissez-vous ces nuisances ?</div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="moins_1mois" name="duree" value="moins_1mois">
+                        <label for="moins_1mois">Moins d'un mois</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="1_3mois" name="duree" value="1_3mois">
+                        <label for="1_3mois">1 à 3 mois</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="3_6mois" name="duree" value="3_6mois">
+                        <label for="3_6mois">3 à 6 mois</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="plus_6mois" name="duree" value="plus_6mois">
+                        <label for="plus_6mois">Plus de 6 mois</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="plusieurs_annees" name="duree" value="plusieurs_annees">
+                        <label for="plusieurs_annees">Depuis plusieurs années</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">9. Accepteriez-vous de rejoindre un collectif citoyen ou d'être recontacté si besoin ?</div>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="oui_collectif" name="collectif" value="oui">
+                        <label for="oui_collectif">Oui</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="non_collectif" name="collectif" value="non">
+                        <label for="non_collectif">Non</label>
+                    </div>
+                </div>
+                <div style="background: #e8f5e8; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em; color: #2e7d32;">
+                    <strong>Utilité :</strong> permet de constituer un noyau d'action
+                </div>
+            </div>
+            
+            <div class="question-block">
+                <div class="question-title">10. Informations personnelles</div>
+                <input type="text" id="nom" placeholder="Nom" required style="margin-bottom: 10px;">
+                <input type="text" id="prenom" placeholder="Prénom" required style="margin-bottom: 10px;">
+                <input type="tel" id="telephone" placeholder="Numéro de téléphone" required style="margin-bottom: 10px;">
+                <input type="text" id="secteur" placeholder="Secteur de résidence (ex: Taravao, Teahupoo...)" style="margin-bottom: 10px;">
+                <input type="text" id="contact" placeholder="Email - facultatif">
+            </div>
+            
+            <button type="submit" class="submit-btn">Valider mon témoignage</button>
+        </form>
+        
+        <div id="thanksMessage" style="display: none; background: #4caf50; color: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;">
+            <h3>Merci pour votre participation !</h3>
+            <p>Votre témoignage a été enregistré et contribue à notre action collective. Ensemble, nous pouvons faire entendre notre voix pour retrouver la tranquillité dans nos quartiers.</p>
+            <p><strong>N'hésitez pas à partager cette enquête</strong> auprès d'autres habitants de Taiarapu-Est concernés par ces nuisances.</p>
+            <p id="contactMessage" style="font-size: 0.9em; margin-top: 15px; display: none; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 5px;">
+                📞 Si vous avez accepté de rejoindre le collectif, vous pourrez être recontacté(e) prochainement pour organiser l'action collective.
+            </p>
+            <p style="font-size: 0.9em; margin-top: 15px;">La tranquillité publique est l'affaire de tous. Unis et déterminés, nous pouvons faire changer les choses !</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialisation complète des variables au début
+        let responses = {
+            nuisances: { motos: 0, musique: 0, rassemblements: 0, autres: 0 },
+            frequence: { quotidien: 0, plusieurs: 0, hebdo: 0, mensuel: 0, rare: 0 },
+            moments: { jour: 0, soiree: 0, nuit: 0, matin: 0 },
+            impacts: { sommeil: 0, stress: 0, enfants: 0, aines: 0, insecurite: 0 },
+            duree: { moins_1mois: 0, '1_3mois': 0, '3_6mois': 0, plus_6mois: 0, plusieurs_annees: 0 },
+            suites: { aucune_suite: 0, ponctuelle: 0, sans_reponse: 0, pas_competence: 0, amelioration: 0, autre_suite: 0 },
+            collectif: { oui: 0, non: 0 },
+            total: 0
+        };
+
+        // Stockage des participants uniques et des réponses détaillées
+        let participants = new Set();
+        let detailedResponses = [];
+        
+        console.log('Variables initialisées:', { participants: participants.size, detailedResponses: detailedResponses.length });
+
+        document.getElementById('noiseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            console.log('=== DÉBUT SOUMISSION ===');
+            
+            // Vérifier que nom, prénom et téléphone sont remplis
+            const nom = document.getElementById('nom').value.trim();
+            const prenom = document.getElementById('prenom').value.trim();
+            const telephoneInput = document.getElementById('telephone').value.trim();
+            
+            console.log('Nom:', nom, 'Prénom:', prenom, 'Téléphone:', telephoneInput);
+            
+            if (!nom || !prenom || !telephoneInput) {
+                alert('Veuillez remplir votre nom, prénom et numéro de téléphone pour valider votre témoignage.');
+                return;
+            }
+            
+            // Créer une clé unique avec nom + prénom (en minuscules pour éviter les doublons de casse)
+            const participantKey = (nom + '_' + prenom).toLowerCase();
+            console.log('Clé participant:', participantKey);
+            
+            // Pour le debug, on va temporairement permettre les doublons
+            /*
+            if (participants.has(participantKey)) {
+                alert('Vous avez déjà participé à cette enquête. Merci pour votre témoignage !');
+                return;
+            }
+            */
+            
+            // Ajouter le participant
+            participants.add(participantKey);
+            console.log('Participant ajouté. Total participants:', participants.size);
+            
+            // Capturer TOUTES les données du formulaire
+            const formData = new FormData(this);
+            console.log('FormData créé');
+            
+            // Capturer chaque champ individuellement pour debug
+            const commune = formData.get('commune');
+            const telephoneValue = document.getElementById('telephone').value.trim();
+            const contactEmail = document.getElementById('contact').value.trim();
+            const nuisances = Array.from(formData.getAll('nuisances'));
+            const demarches = Array.from(formData.getAll('demarches'));
+            const suites = Array.from(formData.getAll('suites'));
+            const collectif = formData.get('collectif');
+            
+            console.log('Données capturées:');
+            console.log('- Commune:', commune);
+            console.log('- Téléphone:', telephoneValue);
+            console.log('- Email:', contactEmail);
+            console.log('- Nuisances:', nuisances);
+            console.log('- Démarches:', demarches);
+            console.log('- Suites:', suites);
+            console.log('- Collectif:', collectif);
+            
+            // Créer l'objet de réponse détaillée
+            const detailedResponse = {
+                nom: nom,
+                prenom: prenom,
+                commune: commune,
+                telephone: telephoneValue,
+                contact: contactEmail,
+                nuisances: nuisances,
+                demarches: demarches,
+                suites: suites,
+                collectif: collectif,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Objet détaillé créé:', detailedResponse);
+            
+            // Ajouter aux réponses détaillées
+            detailedResponses.push(detailedResponse);
+            console.log('Réponse ajoutée. Total réponses:', detailedResponses.length);
+            
+            // Compter cette participation
+            responses.total++;
+            console.log('Total général:', responses.total);
+            
+            // Mise à jour des données (simulation)
+            const nuisancesSelected = formData.getAll('nuisances');
+            const frequenceSelected = formData.get('frequence');
+            const momentsSelected = formData.getAll('moments');
+            const impactsSelected = formData.getAll('impacts');
+            const dureeSelected = formData.get('duree');
+            const suitesSelected = formData.getAll('suites');
+            const collectifSelected = formData.get('collectif');
+            
+            // Incrémenter les compteurs
+            nuisancesSelected.forEach(n => {
+                if (responses.nuisances[n] !== undefined) responses.nuisances[n]++;
+            });
+            if (frequenceSelected && responses.frequence[frequenceSelected] !== undefined) {
+                responses.frequence[frequenceSelected]++;
+            }
+            momentsSelected.forEach(m => {
+                if (responses.moments[m] !== undefined) responses.moments[m]++;
+            });
+            impactsSelected.forEach(i => {
+                if (responses.impacts[i] !== undefined) responses.impacts[i]++;
+            });
+            if (dureeSelected && responses.duree[dureeSelected] !== undefined) {
+                responses.duree[dureeSelected]++;
+            }
+            suitesSelected.forEach(s => {
+                if (responses.suites[s] !== undefined) responses.suites[s]++;
+            });
+            if (collectifSelected && responses.collectif[collectifSelected] !== undefined) {
+                responses.collectif[collectifSelected]++;
+            }
+            
+            // Message de confirmation
+            const collectifChoice = formData.get('collectif');
+            if (collectifChoice === 'oui') {
+                document.getElementById('contactMessage').style.display = 'block';
+            }
+            
+            console.log('=== FIN SOUMISSION ===');
+            console.log('Données finales stockées:', detailedResponses);
+            
+            document.getElementById('thanksMessage').style.display = 'block';
+            document.getElementById('thanksMessage').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function showResults() {
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('totalResponses').textContent = responses.total;
+            
+            // Créer les graphiques
+            createChart('nuisancesChart', responses.nuisances, {
+                motos: 'Motos bruyantes',
+                musique: 'Musique forte',
+                rassemblements: 'Rassemblements',
+                autres: 'Autres'
+            });
+            
+            createChart('frequenceChart', responses.frequence, {
+                quotidien: 'Quotidien',
+                plusieurs: 'Plusieurs fois/semaine',
+                hebdo: 'Hebdomadaire',
+                mensuel: 'Mensuel',
+                rare: 'Rare'
+            });
+            
+            createChart('momentsChart', responses.moments, {
+                jour: 'Journée (7h-18h)',
+                soiree: 'Soirée (18h-22h)',
+                nuit: 'Nuit (22h-5h)',
+                matin: 'Matin (5h-7h)'
+            });
+            
+            createChart('impactsChart', responses.impacts, {
+                sommeil: 'Troubles du sommeil',
+                stress: 'Stress/irritabilité',
+                enfants: 'Impact sur enfants',
+                aines: 'Impact sur aînés',
+                insecurite: 'Insécurité'
+            });
+            
+            createChart('dureeChart', responses.duree, {
+                moins_1mois: 'Moins d\'un mois',
+                '1_3mois': '1 à 3 mois',
+                '3_6mois': '3 à 6 mois',
+                plus_6mois: 'Plus de 6 mois',
+                plusieurs_annees: 'Plusieurs années'
+            });
+            
+            createChart('suitesChart', responses.suites, {
+                aucune_suite: 'Aucune amélioration',
+                ponctuelle: 'Intervention ponctuelle',
+                sans_reponse: 'Sans réponse',
+                pas_competence: 'Pas de compétence',
+                amelioration: 'Amélioration durable',
+                autre_suite: 'Autre résultat'
+            });
+            
+            createChart('collectifChart', responses.collectif, {
+                oui: 'Oui, prêt(e) à rejoindre',
+                non: 'Non, pas intéressé(e)'
+            });
+            
+            // Générer les analyses
+            generateAnalyses();
+            
+            // Scroll vers les résultats
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function createChart(containerId, data, labels) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            const values = Object.values(data);
+            const maxValue = Math.max(...values);
+            
+            // Créer les barres de données
+            const chartData = document.createElement('div');
+            chartData.className = 'chart-data';
+            
+            Object.entries(data).forEach(([key, value]) => {
+                const item = document.createElement('div');
+                item.className = 'chart-data-item';
+                item.innerHTML = `<strong>${labels[key] || key}:</strong> ${value}`;
+                chartData.appendChild(item);
+            });
+            
+            container.appendChild(chartData);
+        }
+        
+        function generateAnalyses() {
+            const total = responses.total;
+            
+            // Analyse nuisances
+            const topNuisance = Object.entries(responses.nuisances).reduce((a, b) => responses.nuisances[a[0]] > responses.nuisances[b[0]] ? a : b);
+            const nuisanceText = total === 0 ? "Aucune donnée collectée." : 
+                total === 1 ? `Premier témoignage collecté. Nuisance principale : ${topNuisance[0] === 'motos' ? 'motos bruyantes' : topNuisance[0] === 'musique' ? 'musique forte' : topNuisance[0] === 'rassemblements' ? 'rassemblements nocturnes' : 'autres nuisances'}.` :
+                `${topNuisance[1]} témoignages sur ${total} signalent des ${topNuisance[0] === 'motos' ? 'motos bruyantes' : topNuisance[0] === 'musique' ? 'musique forte' : topNuisance[0] === 'rassemblements' ? 'rassemblements nocturnes' : 'autres nuisances'}.`;
+            document.getElementById('nuisancesAnalysis').textContent = nuisanceText;
+            
+            // Analyse fréquence
+            const topFrequence = Object.entries(responses.frequence).reduce((a, b) => responses.frequence[a[0]] > responses.frequence[b[0]] ? a : b);
+            const frequenceText = total === 0 ? "Aucune donnée collectée." :
+                total === 1 ? `Fréquence rapportée : ${topFrequence[0] === 'quotidien' ? 'quotidienne' : topFrequence[0] === 'plusieurs' ? 'plusieurs fois par semaine' : topFrequence[0] === 'hebdo' ? 'hebdomadaire' : topFrequence[0] === 'mensuel' ? 'mensuelle' : 'rare'}.` :
+                `${topFrequence[1]} témoignages sur ${total} rapportent une fréquence ${topFrequence[0] === 'quotidien' ? 'quotidienne' : topFrequence[0] === 'plusieurs' ? 'plusieurs fois par semaine' : topFrequence[0] === 'hebdo' ? 'hebdomadaire' : topFrequence[0] === 'mensuel' ? 'mensuelle' : 'rare'}.`;
+            document.getElementById('frequenceAnalysis').textContent = frequenceText;
+            
+            // Analyse moments
+            const topMoment = Object.entries(responses.moments).reduce((a, b) => responses.moments[a[0]] > responses.moments[b[0]] ? a : b);
+            const momentText = total === 0 ? "Aucune donnée collectée." :
+                `Période la plus dérangeante : ${topMoment[0] === 'nuit' ? 'nuit (22h-5h)' : topMoment[0] === 'soiree' ? 'soirée (18h-22h)' : topMoment[0] === 'jour' ? 'journée (7h-18h)' : 'matin (5h-7h)'}.`;
+            document.getElementById('momentsAnalysis').textContent = momentText;
+            
+            // Analyse impacts
+            const topImpact = Object.entries(responses.impacts).reduce((a, b) => responses.impacts[a[0]] > responses.impacts[b[0]] ? a : b);
+            const impactText = total === 0 ? "Aucune donnée collectée." :
+                `Impact principal : ${topImpact[0] === 'sommeil' ? 'troubles du sommeil' : topImpact[0] === 'stress' ? 'stress et irritabilité' : topImpact[0] === 'insecurite' ? 'sentiment d\'insécurité' : topImpact[0] === 'enfants' ? 'effets sur les enfants' : 'effets sur les aînés'}.`;
+            document.getElementById('impactsAnalysis').textContent = impactText;
+            
+            // Analyse durée
+            const topDuree = Object.entries(responses.duree).reduce((a, b) => responses.duree[a[0]] > responses.duree[b[0]] ? a : b);
+            const dureeText = total === 0 ? "Aucune donnée collectée." :
+                `Durée principale : ${topDuree[0] === 'plusieurs_annees' ? 'plusieurs années' : topDuree[0] === 'plus_6mois' ? 'plus de 6 mois' : topDuree[0] === '3_6mois' ? '3 à 6 mois' : topDuree[0] === '1_3mois' ? '1 à 3 mois' : 'moins d\'un mois'}.`;
+            document.getElementById('dureeAnalysis').textContent = dureeText;
+            
+            // Analyse suites
+            const topSuite = Object.entries(responses.suites).reduce((a, b) => responses.suites[a[0]] > responses.suites[b[0]] ? a : b);
+            const suiteText = total === 0 ? "Aucune donnée collectée." :
+                `Réponse institutionnelle : ${topSuite[0] === 'aucune_suite' ? 'aucune amélioration constatée' : topSuite[0] === 'ponctuelle' ? 'intervention ponctuelle sans effet durable' : topSuite[0] === 'sans_reponse' ? 'signalements restés sans réponse' : topSuite[0] === 'pas_competence' ? 'renvoi de compétence' : topSuite[0] === 'amelioration' ? 'amélioration durable' : 'autre résultat'}.`;
+            document.getElementById('suitesAnalysis').textContent = suiteText;
+            
+            // Analyse collectif
+            const oui_collectif = responses.collectif.oui || 0;
+            const non_collectif = responses.collectif.non || 0;
+            const collectifText = total === 0 ? "Aucune donnée collectée." :
+                total === 1 ? `${oui_collectif === 1 ? 'Personne prête à rejoindre le collectif' : 'Personne non intéressée par le collectif'}.` :
+                `${oui_collectif} personne(s) prête(s) à rejoindre le collectif sur ${total} témoignages (${Math.round((oui_collectif/total)*100)}%).`;
+            document.getElementById('collectifAnalysis').textContent = collectifText;
+        }
+
+        // Animation d'entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser les analyses au chargement
+            generateAnalyses();
+            
+            const questionBlocks = document.querySelectorAll('.question-block');
+            questionBlocks.forEach((block, index) => {
+                setTimeout(() => {
+                    block.style.opacity = '0';
+                    block.style.transform = 'translateY(20px)';
+                    block.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        block.style.opacity = '1';
+                        block.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+        
+        // Fonctions administrateur
+        function showAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function generateTable() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password !== 'taiarapu2024') {
+                alert('Mot de passe incorrect');
+                return;
+            }
+            
+            console.log('Toutes les réponses stockées:', detailedResponses);
+            
+            // Pour l'instant, afficher TOUTES les réponses qui acceptent le collectif
+            const collectifResponses = detailedResponses.filter(response => 
+                response.collectif === 'oui'
+            );
+            
+            console.log('Réponses avec collectif=oui:', collectifResponses);
+            
+            // Si aucune réponse avec collectif, afficher toutes les réponses
+            let finalResponses = collectifResponses.length > 0 ? collectifResponses : detailedResponses;
+            
+            // Générer le tableau HTML
+            let tableHTML = `
+                <h3 style="color: #1976d2; text-align: center;">📋 Tableau des Résidents</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                    <strong>${finalResponses.length}</strong> résidents identifiés
+                    <br><small>(Affichage de toutes les réponses pour debug)</small>
+                </p>
+                <div style="overflow-x: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <table style="width: 100%; border-collapse: collapse; background: white;">
+                        <thead style="background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%); color: white;">
+                            <tr>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Nom</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Prénom</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Commune</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Contact</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Démarches → Résultat</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Collectif</th>
+                                <th style="padding: 12px 8px; text-align: left; font-weight: 600;">Nuisances</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            if (finalResponses.length === 0) {
+                tableHTML += `
+                    <tr>
+                        <td colspan="7" style="padding: 20px; text-align: center; color: #666; font-style: italic;">
+                            Aucune donnée stockée pour le moment.
+                            <br><small>Essayez de remplir le questionnaire à nouveau.</small>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                finalResponses.forEach((response, index) => {
+                    const bgColor = index % 2 === 0 ? '#f9f9f9' : 'white';
+                    
+                    // Traduire les démarches
+                    const demarchesText = response.demarches && response.demarches.length > 0 ? 
+                        response.demarches.map(d => {
+                            switch(d) {
+                                case 'police': return 'Forces de l\'ordre';
+                                case 'mairie': return 'Mairie';
+                                case 'dialogue': return 'Dialogue auteurs';
+                                case 'aucune': return 'Aucune démarche';
+                                default: return d;
+                            }
+                        }).join(' + ') : 'Non renseigné';
+                    
+                    // Traduire les suites
+                    const suitesText = response.suites && response.suites.length > 0 ?
+                        response.suites.map(s => {
+                            switch(s) {
+                                case 'aucune_suite': return 'Aucune amélioration';
+                                case 'ponctuelle': return 'Intervention ponctuelle';
+                                case 'sans_reponse': return 'Sans réponse';
+                                case 'pas_competence': return 'Pas de compétence';
+                                case 'amelioration': return 'Amélioration durable';
+                                case 'autre_suite': return 'Autre résultat';
+                                default: return s;
+                            }
+                        }).join(', ') : 'Non renseigné';
+                    
+                    // Combiner démarches et suites
+                    const demarchesResultat = `${demarchesText} → ${suitesText}`;
+                    
+                    // Traduire les nuisances
+                    const nuisancesText = response.nuisances && response.nuisances.length > 0 ?
+                        response.nuisances.map(n => {
+                            switch(n) {
+                                case 'motos': return 'Motos';
+                                case 'musique': return 'Musique';
+                                case 'rassemblements': return 'Rassemblements';
+                                case 'autres': return 'Autres';
+                                default: return n;
+                            }
+                        }).join(', ') : 'Non renseigné';
+                    
+                    tableHTML += `
+                        <tr style="background: ${bgColor};">
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-weight: 600;">${response.nom || 'N/A'}</td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-weight: 600;">${response.prenom || 'N/A'}</td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; color: #1976d2;">${response.commune || 'N/A'}</td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em;">
+                                ${response.telephone || 'Non renseigné'}<br>
+                                <small style="color: #666;">${response.contact || ''}</small>
+                            </td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em;">${demarchesResultat}</td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0;">${response.collectif || 'N/A'}</td>
+                            <td style="padding: 10px 8px; border-bottom: 1px solid #e0e0e0; font-size: 0.9em;">${nuisancesText}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 10px;">
+                    <p style="color: #2e7d32; margin: 0;"><strong>Document confidentiel</strong> - Usage exclusif pour l'action collective citoyenne</p>
+                </div>
+            `;
+            
+            document.getElementById('resultTable').innerHTML = tableHTML;
+            document.getElementById('resultTable').style.display = 'block';
+            document.getElementById('resultTable').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animation d'entrée
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionBlocks = document.querySelectorAll('.question-block');
+            questionBlocks.forEach((block, index) => {
+                setTimeout(() => {
+                    block.style.opacity = '0';
+                    block.style.transform = 'translateY(20px)';
+                    block.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        block.style.opacity = '1';
+                        block.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
